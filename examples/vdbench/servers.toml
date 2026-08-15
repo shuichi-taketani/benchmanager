@@ -1,0 +1,18 @@
+# 負荷サーバ(SSH 接続先)の定義
+# 秘匿情報を含むため .gitignore 対象にしやすいよう test.toml と分離してある
+
+[[servers]]
+name = "bench1"
+host = "bench1.example.com"
+user = "bench"
+ssh_key = "~/.ssh/id_ed25519"
+vdbench_path = "/opt/vdbench"
+workdir = "/tmp/benchman"
+
+# 複数台構成の例(Phase 2 以降で複数サーバ同時実行に対応)
+# [[servers]]
+# name = "bench2"
+# host = "bench2.example.com"
+# user = "bench"
+# ssh_key = "~/.ssh/id_ed25519"
+# vdbench_path = "/opt/vdbench"

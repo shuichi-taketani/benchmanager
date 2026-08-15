@@ -1,0 +1,64 @@
+# vdbench の実行例(実機が必要)
+#   benchman config validate examples/vdbench
+#   benchman plan examples/vdbench
+#   benchman run examples/vdbench --report a900.html
+
+[test]
+tool = "vdbench"
+test_suite = "ontap-a900-nfs"
+description = "AFF A900 NFS ランダムアクセスの IOPS-Latency カーブ"
+
+[strategy]
+type = "vdbench_bisect"        # range(汎用) | vdbench_linear_descent | vdbench_bisect
+
+[strategy.max_load]            # linear_descent/bisect の起点となる最大負荷計測
+mode = "measure"               # measure | manual
+latency_threshold_ms = 5.0
+# manual_iops = 50000          # mode = "manual" のとき必須
+
+[strategy.params]
+step_iops = 10000              # linear_descent のみ使用
+stop_delta_pct = 10
+max_iterations = 10
+
+[timing]
+duration_sec = 600
+warmup_sec = 60
+interval_sec = 1
+
+[tool_params]
+threads = 256
+file_size = "256g"
+jvms = 16
+dedupratio = 1
+compratio = 4
+
+[tool_params.raw]              # params.toml に定義の無いパラメータは無検証でパススルー
+# xfersize_dist = "..."
+
+[matrix]                       # sweepable なツールパラメータ + env_params 名のみ指定可
+read_pct   = [100, 70, 0]
+block_size = ["4k", "8k", "64k"]
+mount_opts = ["default", "nconnect"]
+
+# ---- 環境パラメータ定義 ----
+[env_params.mount_opts]
+target = "server"              # server | storage
+order = 2                      # 小さいほど外側ループ(切替コスト大)
+values = ["default", "nconnect"]
+
+[env_params.mount_opts.apply.default]
+commands = [
+  "umount /mnt/bench || true",
+  "mount -t nfs -o vers=4.1 stor1:/vol1 /mnt/bench",
+]
+verify = "mount | grep -q 'vers=4.1'"
+
+[env_params.mount_opts.apply.nconnect]
+commands = [
+  "umount /mnt/bench || true",
+  "mount -t nfs -o vers=4.1,nconnect=8 stor1:/vol1 /mnt/bench",
+]
+verify = "mount | grep -q 'nconnect=8'"
+# post_apply = ["other_param"]        # 他パラメータの再適用が必要な場合
+# script = "scripts/setup_mount.sh {value}"   # 複雑な手順は外部スクリプトへ委譲

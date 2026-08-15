@@ -1,0 +1,6 @@
+# 測定対象ストレージ定義(モックドライバでは実際には接続しない)
+
+[storage]
+name = "mock-storage"
+luns = ["/mnt/bench/file1"]
+description = "デモ用の疑似ストレージ"

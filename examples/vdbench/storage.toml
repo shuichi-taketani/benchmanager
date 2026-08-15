@@ -1,0 +1,12 @@
+# 測定対象ストレージの定義
+
+[storage]
+name = "ontap-a900"
+luns = ["/mnt/bench/file1", "/mnt/bench/file2"]
+description = "AFF A900 / NFSv4.1"
+
+# env_params の target = "storage" から ONTAP CLI 等を実行する際の接続情報
+[storage.management]
+host = "a900-mgmt.example.com"
+user = "admin"
+ssh_key = "~/.ssh/id_ed25519_ontap"

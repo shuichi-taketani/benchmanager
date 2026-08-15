@@ -1,0 +1,22 @@
+# 実行成果物
+results/
+*.sqlite
+*.sqlite-journal
+benchman.log
+*.html
+!docs/**/*.html
+!tests/fixtures/**/*.html
+
+# 秘匿情報を含みうる設定
+config/servers.toml
+config/storage.toml
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+dist/
+build/
+*.egg-info/
+.pytest_cache/
+.coverage

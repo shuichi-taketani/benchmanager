@@ -1,0 +1,198 @@
+# vdbench のツール固有パラメータ定義(§7)
+#
+# * CLI (`benchman params vdbench`) の一覧表示と設定検証に使う
+# * Phase 3 の GUI がフォームを動的生成するための情報源でもある
+# * ここに無いパラメータは [tool_params.raw] で無検証パススルーできる
+#
+# 仕様書 §7 の例は YAML 風の記法だが、本文の「設定ファイルと形式を統一し TOML とする」
+# に従い TOML の配列テーブルで表現している。
+
+[meta]
+tool = "vdbench"
+version = "1.0"
+
+[[groups]]
+id = "workload"
+label = { en = "Workload", ja = "ワークロード" }
+
+[[groups]]
+id = "storage"
+label = { en = "Storage", ja = "ストレージ定義" }
+
+[[groups]]
+id = "host"
+label = { en = "Host", ja = "ホスト定義" }
+
+[[groups]]
+id = "data"
+label = { en = "Data reduction", ja = "重複排除・圧縮" }
+
+# ---------------------------------------------------------------- workload
+
+[[params]]
+name = "read_pct"
+group = "workload"
+type = "int"
+min = 0
+max = 100
+default = 100
+sweepable = true
+label = { en = "Read %", ja = "Read比率(%)" }
+help = { en = "vdbench 'rdpct'. 100 = read only, 0 = write only.", ja = "vdbench の rdpct。100 で read のみ、0 で write のみ。" }
+
+[[params]]
+name = "block_size"
+group = "workload"
+type = "size"
+default = "4k"
+sweepable = true
+label = { en = "Block size", ja = "ブロックサイズ" }
+help = { en = "vdbench 'xfersize'.", ja = "vdbench の xfersize(1 I/O あたりの転送サイズ)。" }
+
+[[params]]
+name = "threads"
+group = "workload"
+type = "int"
+min = 1
+max = 8192
+default = 32
+sweepable = true
+label = { en = "Threads", ja = "スレッド数" }
+help = { en = "vdbench 'threads' per run definition.", ja = "vdbench の threads(rd あたりのスレッド数)。" }
+
+[[params]]
+name = "seekpct"
+group = "workload"
+type = "float"
+min = 0.0
+max = 100.0
+default = 100.0
+sweepable = true
+label = { en = "Seek %", ja = "シーク率(%)" }
+help = { en = "100 = random, 0 = sequential.", ja = "100 でランダム、0 でシーケンシャル。" }
+
+[[params]]
+name = "rhpct"
+group = "workload"
+type = "int"
+min = 0
+max = 100
+default = 0
+sweepable = false
+label = { en = "Read hit %", ja = "リードヒット率(%)" }
+help = { en = "vdbench 'rhpct'.", ja = "vdbench の rhpct(リードヒット率)。" }
+
+[[params]]
+name = "whpct"
+group = "workload"
+type = "int"
+min = 0
+max = 100
+default = 0
+sweepable = false
+label = { en = "Write hit %", ja = "ライトヒット率(%)" }
+help = { en = "vdbench 'whpct'.", ja = "vdbench の whpct(ライトヒット率)。" }
+
+[[params]]
+name = "range_pct"
+group = "workload"
+type = "float"
+min = 0.0
+max = 100.0
+sweepable = false
+label = { en = "Range %", ja = "アクセス範囲(%)" }
+help = { en = "vdbench 'range=(0,n)': limit the accessed portion of each lun.", ja = "vdbench の range=(0,n)。各 lun のうちアクセスする範囲を制限する。" }
+
+# ---------------------------------------------------------------- storage
+
+[[params]]
+name = "openflags"
+group = "storage"
+type = "choice"
+choices = ["o_direct", "o_dsync", "none"]
+default = "o_direct"
+sweepable = true
+label = { en = "Open flags", ja = "openflag" }
+help = { en = "Cache bypass setting for the lun (o_direct recommended).", ja = "キャッシュ回避の設定(通常は o_direct)。" }
+
+[[params]]
+name = "file_size"
+group = "storage"
+type = "size"
+default = "256g"
+sweepable = false
+label = { en = "Test file size", ja = "テストファイルサイズ" }
+help = { en = "vdbench sd 'size'. Total should be ~4x controller memory.", ja = "vdbench の sd size。全体でコントローラ搭載メモリの 4 倍程度が目安。" }
+
+[[params]]
+name = "files_per_host"
+group = "storage"
+type = "int"
+min = 1
+max = 256
+default = 1
+sweepable = false
+label = { en = "Files per host", ja = "ホストあたりのファイル数" }
+help = { en = "Number of sd entries generated per host from storage.luns.", ja = "storage.luns から生成する 1 ホストあたりの sd 数。" }
+
+[[params]]
+name = "hitarea"
+group = "storage"
+type = "size"
+sweepable = false
+label = { en = "Hit area", ja = "hitarea" }
+help = { en = "vdbench 'hitarea' for read hit simulation.", ja = "リードヒット再現用の hitarea。" }
+
+# ---------------------------------------------------------------- host
+
+[[params]]
+name = "jvms"
+group = "host"
+type = "int"
+min = 1
+max = 256
+default = 16
+sweepable = false
+label = { en = "JVMs per host", ja = "ホストあたりの JVM 数" }
+help = { en = "vdbench 'jvms' in the host definition.", ja = "host definition の jvms。" }
+
+[[params]]
+name = "shell"
+group = "host"
+type = "choice"
+choices = ["ssh", "rsh", "vdbench"]
+default = "ssh"
+sweepable = false
+label = { en = "Remote shell", ja = "リモートシェル" }
+help = { en = "vdbench 'shell' used to start slaves.", ja = "スレーブ起動に使う shell。" }
+
+# ---------------------------------------------------------------- data
+
+[[params]]
+name = "dedupratio"
+group = "data"
+type = "int"
+min = 1
+default = 1
+sweepable = false
+label = { en = "Dedup ratio", ja = "重複排除率" }
+help = { en = "1 = random (no dedup), 2 = two identical blocks.", ja = "1 で重複なし(ランダム)、2 で 2 ブロックが同一。" }
+
+[[params]]
+name = "dedupunit"
+group = "data"
+type = "size"
+default = "32k"
+sweepable = false
+label = { en = "Dedup unit", ja = "重複排除単位" }
+help = { en = "Deduplication block size.", ja = "重複排除の単位サイズ。" }
+
+[[params]]
+name = "compratio"
+group = "data"
+type = "int"
+min = 1
+default = 1
+sweepable = false
+label = { en = "Compression ratio", ja = "圧縮率" }
+help = { en = "1 = random data, 2 = 50% compressible.", ja = "1 でランダム、2 で 50% 圧縮可能。" }

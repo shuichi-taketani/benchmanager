@@ -1,0 +1,6 @@
+# 負荷サーバ定義(モックドライバでは実際には接続しない)
+
+[[servers]]
+name = "mock1"
+host = "mock1.example.local"
+user = "bench"

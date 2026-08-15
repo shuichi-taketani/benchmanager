@@ -1,0 +1,36 @@
+# モックドライバのデモ設定(vdbench 固有戦略: 2 分探索)
+#   benchman run examples/mock-bisect --report mock-bisect.html
+#
+# strategy.type を "vdbench_linear_descent" に変えると線形降下のデモになる。
+# どちらも最大負荷計測(iorate=max 相当)を起点にする。
+
+[test]
+tool = "mock"
+test_suite = "mock-bisect-demo"
+description = "vdbench 固有戦略(2分探索)のデモ(モックドライバ)"
+
+[strategy]
+type = "vdbench_bisect"
+start_iops = 20000          # 2 分探索の下側アンカー(省略時は最大負荷の 10%)
+
+[strategy.max_load]
+mode = "measure"
+latency_threshold_ms = 5.0
+
+[strategy.params]
+step_iops = 10000           # linear_descent のみ使用
+stop_delta_pct = 10
+max_iterations = 8
+
+[timing]
+duration_sec = 300
+warmup_sec = 30
+
+[tool_params]
+threads = 64
+max_iops = 200000
+base_latency_ms = 0.3
+k = 90000.0
+
+[matrix]
+read_pct = [100, 0]

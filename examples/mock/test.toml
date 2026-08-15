@@ -1,0 +1,30 @@
+# モックドライバのデモ設定(汎用戦略 range)
+#   benchman plan examples/mock
+#   benchman run  examples/mock --report mock-range.html
+#
+# 実ストレージも実ベンチマークツールも不要。合成 IOPS-Latency カーブが生成される。
+
+[test]
+tool = "mock"
+test_suite = "mock-range-demo"
+description = "汎用 range 戦略のデモ(モックドライバ)"
+
+[strategy]
+type = "range"
+start_iops = 10000
+end_iops = 100000
+step_iops = 10000
+
+[timing]
+duration_sec = 600
+warmup_sec = 60
+
+[tool_params]
+threads = 32
+max_iops = 120000
+base_latency_ms = 0.4
+k = 60000.0
+
+[matrix]
+read_pct = [100, 70, 0]
+block_size = ["4k", "8k"]

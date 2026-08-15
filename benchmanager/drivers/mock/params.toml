@@ -1,0 +1,96 @@
+# モックドライバのパラメータ定義(§7 / §10)
+# 実機なしでエンジン全体を動かすための合成 IOPS-Latency カーブを制御する。
+
+[meta]
+tool = "mock"
+version = "1.0"
+
+[[groups]]
+id = "workload"
+label = { en = "Workload", ja = "ワークロード" }
+
+[[groups]]
+id = "curve"
+label = { en = "Synthetic curve", ja = "合成カーブ" }
+
+[[params]]
+name = "read_pct"
+group = "workload"
+type = "int"
+min = 0
+max = 100
+default = 100
+sweepable = true
+label = { en = "Read %", ja = "Read比率(%)" }
+help = { en = "Read ratio of the workload.", ja = "ワークロードの read 比率。" }
+
+[[params]]
+name = "block_size"
+group = "workload"
+type = "size"
+default = "4k"
+sweepable = true
+label = { en = "Block size", ja = "ブロックサイズ" }
+help = { en = "Transfer size per I/O.", ja = "1 I/O あたりの転送サイズ。" }
+
+[[params]]
+name = "threads"
+group = "workload"
+type = "int"
+min = 1
+max = 4096
+default = 32
+sweepable = true
+label = { en = "Threads", ja = "スレッド数" }
+help = { en = "Number of threads.", ja = "スレッド数。" }
+
+[[params]]
+name = "max_iops"
+group = "curve"
+type = "int"
+min = 1
+default = 100000
+sweepable = false
+label = { en = "Max IOPS", ja = "最大 IOPS" }
+help = { en = "Asymptote of the synthetic curve at 4k/read100.", ja = "4k/read100 における合成カーブの漸近線。" }
+
+[[params]]
+name = "base_latency_ms"
+group = "curve"
+type = "float"
+min = 0.0
+default = 0.4
+sweepable = false
+label = { en = "Base latency (ms)", ja = "ベースレイテンシ (ms)" }
+help = { en = "latency = base + k / (max_iops - iops)", ja = "latency = base + k / (max_iops - iops)" }
+
+[[params]]
+name = "k"
+group = "curve"
+type = "float"
+min = 0.0
+default = 50000.0
+sweepable = false
+label = { en = "Curve factor k", ja = "カーブ係数 k" }
+help = { en = "Larger k bends the knee earlier.", ja = "k が大きいほど膝が手前に出る。" }
+
+[[params]]
+name = "noise_pct"
+group = "curve"
+type = "float"
+min = 0.0
+max = 100.0
+default = 0.0
+sweepable = false
+label = { en = "Noise (%)", ja = "ノイズ (%)" }
+help = { en = "Deterministic pseudo noise amplitude (reproducible).", ja = "決定論的な擬似ノイズの振幅(再現性あり)。" }
+
+[[params]]
+name = "fail_at_iops"
+group = "curve"
+type = "int"
+min = 0
+default = 0
+sweepable = false
+label = { en = "Fail at IOPS", ja = "失敗させる IOPS" }
+help = { en = "If non-zero, measurements at this target fail (for testing retry).", ja = "0 以外にすると、その目標 IOPS の測定を失敗させる(リトライ試験用)。" }

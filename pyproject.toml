@@ -1,0 +1,39 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "benchmanager"
+version = "0.1.0"
+description = "Benchmark Manager - ストレージベンチマーク自動化ツール"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic>=2.0",
+    "typer>=0.12",
+    "asyncssh>=2.14",
+    "plotly>=5.20",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+]
+analysis = [
+    "pandas>=2.0",
+]
+
+[project.scripts]
+benchman = "benchmanager.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["benchmanager"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"locales" = "benchmanager/locales"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+filterwarnings = ["ignore::DeprecationWarning"]

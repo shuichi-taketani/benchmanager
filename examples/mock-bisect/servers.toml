@@ -1,0 +1,4 @@
+[[servers]]
+name = "mock1"
+host = "mock1.example.local"
+user = "bench"

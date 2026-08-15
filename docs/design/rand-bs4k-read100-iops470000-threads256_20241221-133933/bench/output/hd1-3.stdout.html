@@ -1,0 +1,71 @@
+<title>Vdbench output/hd1-3.stdout.html</title><pre>
+stdout/stderr for slave=hd1-3
+
+13:39:36.301 13:39:36.297 SlaveJvm execution parameter:  '-m 192.168.221.61'
+13:39:36.301 13:39:36.298 SlaveJvm execution parameter:  '-n Rocky-01-13-241221-13.39.33.856'
+13:39:36.301 13:39:36.298 SlaveJvm execution parameter:  '-l hd1-3'
+13:39:36.301 13:39:36.298 SlaveJvm execution parameter:  '-p 5570'
+13:39:36.301 13:39:36.298 SlaveJvm positional parameter: 'SlaveJvm'
+13:39:46.209 13:39:46.207 successfully connected to master 192.168.221.61
+13:39:46.209 13:39:46.208 Connection to 192.168.221.61 using port 5570 successful
+
+Link to Run Definitions:         <A HREF="#_1449621165">rd1 For loops: threads=256</A>
+
+13:39:54.863 13:39:54.862 Beginning of run setup
+13:39:54.864 13:39:54.862 **********************
+13:39:54.864 
+13:39:54.864 
+13:39:57.433 13:39:57.431 Created flipflop bitmap for sd1-1. 1 bitmaps for a total of 8,388,608 bits.
+13:39:57.554 13:39:57.552 Opening sd=sd1-1,lun=/mnt/test/file1; write: false; flags: OpenFlags: 0x00004000 OtherFlags: 0x00000000
+13:39:57.618 13:39:57.613 Creating bitmap for unique blocks for sd=sd1-1. 1 bitmaps for a total of 8,388,608 bits, identifying 8,388,608 unique blocks
+13:39:58.106 13:39:58.105 Started 1 Workload Generator threads.
+13:39:59.237 13:39:59.235 Started 16 i/o threads for sd1-1
+13:39:59.237 13:39:59.235 Started a total of 16 i/o threads.
+13:39:59.237 13:39:59.235 Waiting for task synchronization
+13:39:59.237 13:39:59.235 task_wait_start_complete: IO_task /mnt/test/file1 1
+13:39:59.438 13:39:59.436 Requesting full garbage collection
+13:39:59.438 13:39:59.437 GcTracker: cum:   2 intv:  2 ms:     523 mss:  0.00% Heap_MB max:   990 curr:   252 used:   152 free:   100 
+13:39:59.542 13:39:59.541 GcTracker: cum:   3 intv:  1 ms:     102 mss:  0.00% Heap_MB max:   990 curr:   310 used:    18 free:   291 
+13:39:59.542 13:39:59.541 task_wait_start_complete() end
+
+<a name="_1449621165"></a><i><b>13:40:05.018 Starting RD=rd1; I/O rate: 470000; elapsed=180 warmup=30; For loops: threads=256</b></i>
+
+13:40:05.065 13:40:05.064 task_run_all(): 18 tasks
+13:43:41.243 13:43:41.236 Ended WT_task
+13:43:41.443 13:43:41.357 Sent 16 interrupts to 16 waiting IO_task threads
+13:43:41.443 13:43:41.360 Dedup counters. Bytes written: 0 across: 0 (NaN%) on_sd: 0 (NaN%) dups: 0 (NaN%) resulting dedup=NaN% (NaN:1)
+13:43:41.443 13:43:41.362 Dedup options: 
+13:43:41.443 dedup_type:                            1
+13:43:41.443 dedup_ratio:                        1.00
+13:43:41.443 dedup_unit:                       32,768
+13:43:41.443 flipflop:                             no
+13:43:41.443 hot_dedup_sets:                        0
+13:43:41.443 hot_dedup_blocks:                      0
+13:43:41.443 dedup_sets_reqd:                      5%
+13:43:41.443 dedup_sets_used:               6,710,886
+13:43:41.443 
+13:43:41.443 unique_blocks:               134,217,728
+13:43:41.443 duplicate_blocks:                      0 (including 6,710,886 originals)
+13:43:41.443 dedup_pct:                        100.00
+13:43:41.443 dedup_adjusted:                   100.00
+13:43:41.443 total_size:                           4t
+13:43:41.443 unit_blocks:                 134,217,728
+13:43:41.443 
+13:43:41.443 Info only reliable if xfersize is multiple of dedupunit:
+13:43:41.443 uniques_written:                       0; expected 134,217,728; delta -134,217,728 
+13:43:41.443 duplicates_written:                    0; expected 0; delta 0 
+13:43:41.443 Total writes:                          0; delta -134,217,728
+13:43:41.443 flipflops:                             0
+13:43:41.443 
+13:43:41.443 Dsim counts: Hash size:      140,928,614 (134,217,728 uniques + 6,710,886 sets)
+13:43:41.443 Dsim counts: Duplicates:      -6,710,886
+13:43:41.443 Dsim counts: Ratio:                 0.95 (0.95238)
+13:43:41.443 
+13:43:41.443 13:43:41.363 Java Heap in MB. max:  989.875; current:  309.566; used:   71.827; free:  237.740
+13:43:41.443 13:43:41.363 Maximum native memory allocation:    1,048,576; Current allocation:            0
+13:43:41.443 13:43:41.363 End of run
+13:43:41.443 13:43:41.363 **********
+13:43:41.443 
+13:43:41.443 
+13:43:42.766 13:43:42.750 Master is requesting slave shutdown
+13:43:42.766 13:43:42.750 Java Heap in MB. max:  989.875; current:  309.566; used:   71.827; free:  237.740

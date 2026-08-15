@@ -1,0 +1,3 @@
+[storage]
+name = "mock-storage"
+luns = ["/mnt/bench/file1"]
